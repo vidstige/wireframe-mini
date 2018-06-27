@@ -19,9 +19,10 @@ function start() {
 
   canvas.onmousemove = function(event) {
     const r = 0.1;
+    const rect = event.target.getBoundingClientRect();
     const m = {
-      x: event.clientX / canvas.width,
-      y: event.clientY / canvas.height};
+      x: (event.clientX - rect.left) / canvas.width,
+      y: (event.clientY - rect.top) / canvas.height};
     for (var i = 0; i < points.length; i++) {
       const p = points[i].p;
       const dx = p.x - m.x;
