@@ -1,0 +1,8 @@
+{
+  "name": "wireframe-miniz",
+  "version": "1.0.0",
+  "description": "Wireframes",
+  "main": "index.js",
+  "author": "Samuel Carlsson <samuel.carlsson@gmail.com>",
+  "license": "MIT"
+}
