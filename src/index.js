@@ -47,19 +47,9 @@ function start() {
       point.p.x += v * point.v.x * dt;
       point.p.y += v * point.v.y * dt;
       point.p.x %= 1;
+      if (point.p.x < 0) point.p.x += 1;
       point.p.y %= 1;
-    }
-    const lines = [];
-    for (var i = 0; i < points.length; i++) {
-      for (var j = i+1; j < points.length; j++) {
-        const pi = points[i].p;
-        const pj = points[j].p;
-        const r2 = dist2(pi, pj);
-        //console.log(r2);
-        if (r2 < 0.02) {
-          lines.push(i, j);
-        }
-      }
+      if (point.p.y < 0) point.p.y += 1;
     }
     
     // draw
@@ -72,17 +62,22 @@ function start() {
       ctx.fillRect(x * canvas.width, y * canvas.height, 2, 2);
     }
 
-    ctx.strokeStyle="#8883";
-
-    for (var i = 0; i < lines.length; i+=2) {
-      ctx.beginPath();
-      const pa = points[lines[i+0]].p;
-      const pb = points[lines[i+1]].p;
-      ctx.moveTo(pa.x * canvas.width, pa.y * canvas.height);
-      ctx.lineTo(pb.x * canvas.width, pb.y * canvas.height);
-      ctx.stroke();
+    const radius = 0.14;
+    for (var i = 0; i < points.length; i++) {
+      for (var j = i+1; j < points.length; j++) {
+        const pi = points[i].p;
+        const pj = points[j].p;
+        const r2 = dist2(pi, pj);
+        if (r2 < radius*radius) {
+          const alpha = 1 - r2 / (radius*radius);
+          ctx.strokeStyle="rgba(200, 200, 200, " + alpha + ")";
+          ctx.beginPath();
+          ctx.moveTo(pi.x * canvas.width, pi.y * canvas.height);
+          ctx.lineTo(pj.x * canvas.width, pj.y * canvas.height);
+          ctx.stroke();
+        }
+      }
     }
-
     requestAnimationFrame(animate);
   }
 
